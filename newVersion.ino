@@ -24,7 +24,7 @@ File myFile; // declaração dp arquivo para fazer gravação no txt dentro do c
 // -------------------------------------------------- declaração da função de conversão de valores -------------------------------------------
 
 float convert(int value){ // função para conversão de valores
-  return map(value, 0, 1023, 0, 100);
+  return map(value, 1023, 0, 0, 100);
 }
 
 // ------------------------------------------------- função setup ----------------------------------------------------------------------------
