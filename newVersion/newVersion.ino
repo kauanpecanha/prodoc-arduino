@@ -19,7 +19,7 @@ LiquidCrystal_I2C lcd(0x27,16,2); // declaração do display lcd, sendo o primei
 
 // ------------------------------------------------- declaração e definição do cartão sd -----------------------------------------------------
 int CS = 10;
-File myFile; // declaração dp arquivo para fazer gravação no txt dentro do cartão sd
+File myFile = SD.open("DADOS.txt", FILE_WRITE); // declaração dp arquivo para fazer gravação no txt dentro do cartão sd
 
 // -------------------------------------------------- declaração da função de conversão de valores -------------------------------------------
 
@@ -113,6 +113,52 @@ void printSerial(float v1, float v2, int k){ // função responsável por imprim
   valuesPercent(v2, k); // chamada da função
 }
 
+void writeSD(float v1, float v2, int key){
+  
+  String str = "";
+  if(key == 0){
+    
+    if(SD.begin(10)){
+      Serial.println("Cartão Inicializado.");
+
+      if(SD.exists("DADOS.txt")){
+        Serial.println("Arquivo envontrado com sucesso.");
+      }
+      else{
+        Serial.println("Arquivo não encontrado.");
+      }
+    }
+    else{
+      Serial.println("Falha na leitura da porta 10");
+    }
+
+  }
+
+  if(key == 1){
+    
+    if(SD.begin(10)){
+
+      if(SD.exists("DADOS.txt")){
+        myFile = SD.open("DADOS.txt", FILE_WRITE);
+
+        str = "Sensor 1: " + String(v1) + "\t" + "Sensor 2: " + String(v2);
+        Serial.println(str);
+        myFile.println(str);
+        myFile.close();
+        Serial.println("Dados escritos.");
+
+      }
+      else{
+        Serial.println("Arquivo não encontrado.");
+      }
+    }
+    else{
+      Serial.println("Falha na leitura da porta 10");
+    }
+
+  }
+}
+
 // ------------------------------------------------- função setup ----------------------------------------------------------------------------
 
 void setup() {
@@ -128,14 +174,24 @@ void setup() {
 
   pinMode(CS, OUTPUT);
 
-  myFile = SD.open("dados.txt"); // o arquivo deverá estar interligado com um txt dentro do leitor de cartão sd, sendo, neste caso, dados.txt
 
-  if(SD.begin(10)){ // estrutura para detectar o leitor de cartão sd na porta 10
-    Serial.println("Cartão inicializado.\n"); // mensagem de sucesso
-  }
-  else{ // do contrário
-    Serial.println("Falha na leitura.\n"); // mensagem de falha
-  }
+  // if(SD.begin(10)){ // estrutura para detectar o leitor de cartão sd na porta 10
+  //   Serial.println("Cartão inicializado.\n"); // mensagem de sucesso
+  // }
+  // else{ // do contrário
+  //   Serial.println("Falha na leitura.\n"); // mensagem de falha
+  // }
+
+  // if (SD.exists("DADOS.txt")){
+  //   myFile = SD.open("DADOS.txt", FILE_WRITE); // o arquivo deverá estar interligado com um txt dentro do leitor de cartão sd, sendo, neste caso, dados.txt
+  //   Serial.println("Arquivo envontrado com sucesso.");
+  //   myFile.close();
+  // }
+  // else{
+  //   Serial.println("Arquivo inexistente.");
+  // }
+
+  writeSD(0, 0, 0);
 
 }
 
@@ -152,14 +208,16 @@ void loop() {
   myFile.println(finalValue1); // gravação da informação do primeiro sensor de umidade
   myFile.println(finalValue2); // gravação da informação do segundo sensor de umidade
   
-  printSerial(finalValue1, finalValue2, 0);
+  printSerial(finalValue1, finalValue2, 0); // impressão das informações no monitor serial
   lcd.setCursor(0, 0); // posicionamento do cursor na localização 3, 0 do lcd
   lcd.print("Umidade1:");
-  valuesPercent(finalValue1, 1);
+  valuesPercent(finalValue1, 1); // exibição do valor do sensor 1, no lcd
 
   lcd.setCursor(0, 1); // posicionamento do cursor na localização 3, 1 do lcd
   lcd.print("Umidade2:");
-  valuesPercent(finalValue2, 1);
+  valuesPercent(finalValue2, 1); // exibição do valor do sensor 2, no lcd
+
+  writeSD(finalValue1, finalValue2, 1); // gravação dos dados no cartão sd
  
   delay(1000);
 
