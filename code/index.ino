@@ -9,7 +9,7 @@
 const int sensorUmidade1 = A0; // declaração do primeiro sensor de umidade na porta A0
 const int sensorUmidade2 = A1; // declaração do primeiro sensor de umidade na porta A1
 
-int readValue1 = 0;
+int readValue1 = 0; // declaração dos valores a serem utilizados
 int readValue2 = 0;
 int finalValue1 = 0;
 int finalValue2 = 0;
@@ -32,7 +32,7 @@ void valuesPercent(float v, int key){ // função com o intuito de imprimir a fa
   
   if(key == 0){  // caso a key de identificação seja 0 (monitor serial), ele executa as Serial.println()
     
-    if (v <= 10){
+    if (v <= 10){ // faixas de valores
       Serial.println("0% e 10%");
     }
     else if(v > 10 && v <=20){
@@ -68,7 +68,8 @@ void valuesPercent(float v, int key){ // função com o intuito de imprimir a fa
   }
   
   if(key == 1){  // caso a key de identificação seja 1(visor lcd), ele executa as lcd.print()
-    if (v <= 10){
+    
+    if (v <= 10){ // faixas de valores
       lcd.print("0%-10%");
     }
     else if(v > 10 && v <=20){
@@ -174,24 +175,7 @@ void setup() {
 
   pinMode(CS, OUTPUT);
 
-
-  // if(SD.begin(10)){ // estrutura para detectar o leitor de cartão sd na porta 10
-  //   Serial.println("Cartão inicializado.\n"); // mensagem de sucesso
-  // }
-  // else{ // do contrário
-  //   Serial.println("Falha na leitura.\n"); // mensagem de falha
-  // }
-
-  // if (SD.exists("DADOS.txt")){
-  //   myFile = SD.open("DADOS.txt", FILE_WRITE); // o arquivo deverá estar interligado com um txt dentro do leitor de cartão sd, sendo, neste caso, dados.txt
-  //   Serial.println("Arquivo envontrado com sucesso.");
-  //   myFile.close();
-  // }
-  // else{
-  //   Serial.println("Arquivo inexistente.");
-  // }
-
-  writeSD(0, 0, 0);
+  writeSD(0, 0, 0); // detecção inicial do cartão sd
 
 }
 
