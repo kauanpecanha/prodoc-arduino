@@ -27,6 +27,92 @@ float convert(int value){ // função para conversão de valores
   return map(value, 1023, 0, 0, 100);
 }
 
+// -------------------------------------------------- declaração da função de impressão de valores -------------------------------------------
+void valuesPercent(float v, int key){ // função com o intuito de imprimir a faixa de valores dos sensores tanto no monitor serial quanto no visor lcd
+  
+  if(key == 0){  // caso a key de identificação seja 0 (monitor serial), ele executa as Serial.println()
+    
+    if (v <= 10){
+      Serial.println("0% e 10%");
+    }
+    else if(v > 10 && v <=20){
+      Serial.println("10% a 20%");
+    }
+    else if(v > 20 && v <=30){
+      Serial.println("20% a 30%");
+    }
+    else if(v > 30 && v <40){
+      Serial.println("30% a 40%");
+    }
+    else if(v > 40 && v <=50){
+      Serial.println("40% a 50%");
+    }
+    else if(v > 50 && v <=60){
+      Serial.println("50 a 60%");
+    }
+    else if(v > 60 && v <=70){
+      Serial.println("60% a 70%");
+    }
+    else if(v > 70 && v <=80){
+      Serial.println("70% a 80%");
+    }
+    else if(v > 80 && v <=90){
+      Serial.println("80% a 90%");
+    }
+    else if(v > 90 && v <=100){
+      Serial.println("90% a 100%");
+    }
+    else{
+      Serial.println("Error");
+    }
+  }
+  
+  if(key == 1){  // caso a key de identificação seja 1(visor lcd), ele executa as lcd.print()
+    if (v <= 10){
+      lcd.print("0%-10%");
+    }
+    else if(v > 10 && v <=20){
+      lcd.print("10%-20%");
+    }
+    else if(v > 20 && v <=30){
+      lcd.print("20%-30%");
+    }
+    else if(v > 30 && v <40){
+      lcd.print("30%-40%");
+    }
+    else if(v > 40 && v <=50){
+      lcd.print("40%-50%");
+    }
+    else if(v > 50 && v <=60){
+      lcd.print("50%-60%");
+    }
+    else if(v > 60 && v <=70){
+      lcd.print("60%-70%");
+    }
+    else if(v > 70 && v <=80){
+      lcd.print("70%-80%");
+    }
+    else if(v > 80 && v <=90){
+      lcd.print("80%-90%");
+    }
+    else if(v > 90 && v <=100){
+      lcd.print("90%-100%");
+    }
+    else{
+      lcd.print("Error");
+    }
+  }
+}
+
+// -------------------------------------------------- declaração da função de impressão padrão -------------------------------------------
+
+void printSerial(float v1, float v2, int k){ // função responsável por imprimir os valores no monitor serial
+  Serial.print("Sensor 1: "); // impressão da faixa de valores no primeiro sensor
+  valuesPercent(v1, k); // chamada da função
+  Serial.print("Sensor 2: "); // impressão da faixa de valores no segundo sensor
+  valuesPercent(v2, k); // chamada da função
+}
+
 // ------------------------------------------------- função setup ----------------------------------------------------------------------------
 
 void setup() {
@@ -38,10 +124,6 @@ void setup() {
 
   lcd.init(); // inicialização do lcd
   lcd.clear(); // limpeza prévia de quaisquer informações que estejam visíveis no seu visor
-  lcd.setCursor(0, 0);
-  // lcd.print("S1:");
-  lcd.setCursor(0, 1);
-  // lcd.print("S2:");
   lcd.setBacklight(HIGH); // luz traseira do lcd ligada
 
   pinMode(CS, OUTPUT);
@@ -70,17 +152,15 @@ void loop() {
   myFile.println(finalValue1); // gravação da informação do primeiro sensor de umidade
   myFile.println(finalValue2); // gravação da informação do segundo sensor de umidade
   
-  Serial.println(finalValue1); // impressão do valor no monitor serial
-  Serial.println(finalValue2); // impressão do valor no monitor serial
-
+  printSerial(finalValue1, finalValue2, 0);
   lcd.setCursor(0, 0); // posicionamento do cursor na localização 3, 0 do lcd
-  lcd.print("Umidade1: ");
-  lcd.print(finalValue1); // impressão do valor nesta localização
+  lcd.print("Umidade1:");
+  valuesPercent(finalValue1, 1);
 
   lcd.setCursor(0, 1); // posicionamento do cursor na localização 3, 1 do lcd
-  lcd.print("Umidade2: ");
-  lcd.print(finalValue2); // impressão do valor nesta localização
-
+  lcd.print("Umidade2:");
+  valuesPercent(finalValue2, 1);
+ 
   delay(1000);
 
 }
