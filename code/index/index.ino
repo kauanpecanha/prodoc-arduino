@@ -203,6 +203,6 @@ void loop() {
 
   writeSD(finalValue1, finalValue2, 1); // gravação dos dados no cartão sd
  
-  delay(1000);
+  delay(1000); // delay de um segundo entre cada iteração
 
 }
