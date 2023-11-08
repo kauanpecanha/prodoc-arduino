@@ -19,7 +19,8 @@ LiquidCrystal_I2C lcd(0x27,16,2); // declaração do display lcd, sendo o primei
 
 // ------------------------------------------------- declaração e definição do cartão sd -----------------------------------------------------
 int CS = 10;
-File myFile = SD.open("DADOS.txt", FILE_WRITE); // declaração dp arquivo para fazer gravação no txt dentro do cartão sd
+File myFile; // declaração do arquivo para fazer gravação no txt dentro do cartão sd
+// File myFile = SD.open("DADOS.txt", FILE_READ); // declaração do arquivo para fazer gravação no txt dentro do cartão sd
 
 // -------------------------------------------------- declaração da função de conversão de valores -------------------------------------------
 
@@ -114,7 +115,7 @@ void printSerial(float v1, float v2, int k){ // função responsável por imprim
   valuesPercent(v2, k); // chamada da função
 }
 
-void writeSD(float v1, float v2, int key){
+void writeSD(float v1, float v2, int key){ // função responsável pela escrita dos dados no cartão sd
   
   String str = "";
   if(key == 0){
@@ -123,11 +124,16 @@ void writeSD(float v1, float v2, int key){
       Serial.println("Cartão Inicializado.");
 
       if(SD.exists("DADOS.txt")){
-        Serial.println("Arquivo envontrado com sucesso.");
+        
+        // Serial.println("Arquivo envontrado com sucesso.");
+        Serial.println("Este arquivo existe. Removendo...");
+        SD.remove("DADOS.txt"); // caso o arquivo exista, ele é completamente apagado, com o intuito de fazer uma gravação do zero
+        Serial.println("Arquivo removido com sucesso.");
+
       }
-      else{
-        Serial.println("Arquivo não encontrado.");
-      }
+      
+      File myFile = SD.open("DADOS.txt", FILE_WRITE); // criação do arquivo para gravação dos dados
+      Serial.println("Arquivo criado com sucesso"); // impressão de mensagem de sucesso no Serial Monitor
     }
     else{
       Serial.println("Falha na leitura da porta 10");
@@ -142,11 +148,12 @@ void writeSD(float v1, float v2, int key){
       if(SD.exists("DADOS.txt")){
         myFile = SD.open("DADOS.txt", FILE_WRITE);
 
-        str = "Sensor 1: " + String(v1) + "\t" + "Sensor 2: " + String(v2);
+        str = String(v1) + ";" + String(v2);
+        // str = "Sensor 1: " + String(v1) + "\t" + "Sensor 2: " + String(v2);
         Serial.println(str);
         myFile.println(str);
         myFile.close();
-        Serial.println("Dados escritos.");
+        // Serial.println("Dados escritos.");
 
       }
       else{
