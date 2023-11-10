@@ -1,6 +1,8 @@
 # Documentação do Projeto Sensor de Umidade
 # Aluno: Kauan Peçanha Lira, Prodocência, Professor Joel Sanchez
 
+![Sensor de Umidade](esquematico.png)
+
 ## Primeiro passo: clonagem do repositório usando o comando
 O download do repositório pode ser feito de duas formas:
 
