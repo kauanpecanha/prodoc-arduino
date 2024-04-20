@@ -1,11 +1,9 @@
 # Documentação do Projeto Sensor de Umidade
 ##### Aluno: Kauan Peçanha Lira, Prodocência, Professor Joel Sanchez
 
-### Módulo de Plotagem de Gráficos
+### Protótipo da embalagem do Sensor de Umidade
 
-Para uso desse módulo, segue-se o passo a passo abaixo:
-1 - Instale as bibliotecas necessárias utilizando o comando abaixo:
-```pip install -r requirements.txt```
+#### Feito no site abaixo:
+``https://app.sketchup.com/app``
 
-2 - Comando de plotagem de gráfico:
-```python index.py```
+#### Para impressão 3D, faça o donwload do arquivo no formato .stl
